@@ -7,6 +7,7 @@ type Activity = "low" | "medium" | "high";
 type Goal = "lose" | "maintain" | "gain";
 
 export default function Home() {
+  const [step, setStep] = useState(1);
   const [gender, setGender] = useState<Gender | null>(null);
   const [activity, setActivity] = useState<Activity | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
@@ -78,88 +79,151 @@ export default function Home() {
           Розрахуй орієнтовну денну схему харчування без калорій і складних формул.
         </p>
 
-        <Block title="1. Обери стать">
-          <Button active={gender === "female"} onClick={() => setGender("female")}>
-            Жінка
-          </Button>
-          <Button active={gender === "male"} onClick={() => setGender("male")}>
-            Чоловік
-          </Button>
-        </Block>
+        <div className="progress">
+          <div style={{ width: `${(step / 5) * 100}%` }} />
+        </div>
 
-        <Block title="2. Який у тебе рівень активності?">
-          <div className="hintBox">
-            <p>
-              <strong>Низький:</strong>
-              <br />
-              — сидяча робота
-              <br />
-              — мало руху
-              <br />
-              — тренувань майже немає
-            </p>
+        {step === 1 && (
+          <Block title="1. Обери стать">
+            <Button
+              active={gender === "female"}
+              onClick={() => {
+                setGender("female");
+                setStep(2);
+              }}
+            >
+              Жінка
+            </Button>
+            <Button
+              active={gender === "male"}
+              onClick={() => {
+                setGender("male");
+                setStep(2);
+              }}
+            >
+              Чоловік
+            </Button>
+          </Block>
+        )}
 
-            <p>
-              <strong>Середній:</strong>
-              <br />
-              — 2–4 тренування на тиждень
-              <br />
-              — приблизно 6–10 тис. кроків на день
-            </p>
+        {step === 2 && (
+          <Block title="2. Який у тебе рівень активності?">
+            <div className="hintBox">
+              <p>
+                <strong>Низький:</strong>
+                <br />
+                — сидяча робота
+                <br />
+                — мало руху
+                <br />
+                — тренувань майже немає
+              </p>
 
-            <p>
-              <strong>Високий:</strong>
-              <br />
-              — 4+ тренувань на тиждень
-              <br />
-              — або активна робота
-              <br />
-              — або багато руху протягом дня
-            </p>
+              <p>
+                <strong>Середній:</strong>
+                <br />
+                — 2–4 тренування на тиждень
+                <br />
+                — приблизно 6–10 тис. кроків на день
+              </p>
 
-            <p className="tip">
-              💡 <strong>Якщо сумніваєшся — краще обери нижчий рівень.</strong>
-            </p>
-          </div>
+              <p>
+                <strong>Високий:</strong>
+                <br />
+                — 4+ тренувань на тиждень
+                <br />
+                — або активна робота
+                <br />
+                — або багато руху протягом дня
+              </p>
 
-          <Button active={activity === "low"} onClick={() => setActivity("low")}>
-            Низький
-          </Button>
-          <Button active={activity === "medium"} onClick={() => setActivity("medium")}>
-            Середній
-          </Button>
-          <Button active={activity === "high"} onClick={() => setActivity("high")}>
-            Високий
-          </Button>
-        </Block>
+              <p className="tip">
+                💡 <strong>Якщо сумніваєшся — краще обери нижчий рівень.</strong>
+              </p>
+            </div>
 
-        <Block title="3. Твоя ціль">
-          <Button active={goal === "lose"} onClick={() => setGoal("lose")}>
-            Схуднення
-          </Button>
-          <Button active={goal === "maintain"} onClick={() => setGoal("maintain")}>
-            Підтримка
-          </Button>
-          <Button active={goal === "gain"} onClick={() => setGoal("gain")}>
-            Набір ваги/мʼязів
-          </Button>
-        </Block>
+            <Button
+              active={activity === "low"}
+              onClick={() => {
+                setActivity("low");
+                setStep(3);
+              }}
+            >
+              Низький
+            </Button>
+            <Button
+              active={activity === "medium"}
+              onClick={() => {
+                setActivity("medium");
+                setStep(3);
+              }}
+            >
+              Середній
+            </Button>
+            <Button
+              active={activity === "high"}
+              onClick={() => {
+                setActivity("high");
+                setStep(3);
+              }}
+            >
+              Високий
+            </Button>
+          </Block>
+        )}
 
-        <Block title="4. Скільки прийомів їжі в день?">
-          <div className="mealGrid">
-            {[1, 2, 3, 4, 5].map((item) => (
-              <button
-                key={item}
-                className={meals === item ? "meal active" : "meal"}
-                onClick={() => setMeals(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </Block>
+        {step === 3 && (
+          <Block title="3. Яка твоя ціль зараз?">
+            <Button
+              active={goal === "lose"}
+              onClick={() => {
+                setGoal("lose");
+                setStep(4);
+              }}
+            >
+              Схуднення
+            </Button>
+            <Button
+              active={goal === "maintain"}
+              onClick={() => {
+                setGoal("maintain");
+                setStep(4);
+              }}
+            >
+              Підтримка
+            </Button>
+            <Button
+              active={goal === "gain"}
+              onClick={() => {
+                setGoal("gain");
+                setStep(4);
+              }}
+            >
+              Набір ваги/мʼязів
+            </Button>
+          </Block>
+        )}
 
-        {result && (
+        {step === 4 && (
+          <Block title="4. Скільки прийомів їжі в день?">
+            <div className="mealGrid">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <button
+                  key={item}
+                  className={meals === item ? "meal active" : "meal"}
+                  onClick={() => {
+                    setMeals(item);
+                    setStep(5);
+                  }}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </Block>
+        )}
+
+        {step === 5 && result && (
           <section className="result">
             <h2>Ось твоя орієнтовна схема 👇</h2>
 
@@ -171,17 +235,34 @@ export default function Home() {
             </div>
 
             <div className="mealResult">
-              <h3>Якщо ти їси {meals} рази/разів на день:</h3>
-              <p>🥩 Білок: {result.proteinMeal} долоні на прийом їжі</p>
-              <p>🥦 Овочі: {result.vegMeal} кулака на прийом їжі</p>
-              <p>🍚 Вуглеводи: {result.carbsMeal} жмені на прийом їжі</p>
-              <p>🥑 Жири: {result.fatMeal} пальця на прийом їжі</p>
+              <h3>На 1 прийом їжі:</h3>
+              <p>🥩 Білок: {result.proteinMeal} долоні</p>
+              <p>🥦 Овочі: {result.vegMeal} кулака</p>
+              <p>🍚 Вуглеводи: {result.carbsMeal} жмені</p>
+              <p>🥑 Жири: {result.fatMeal} пальця</p>
             </div>
 
-            <button className="pdfButton">
-              📄 Отримати PDF-чеклист у бот
+            <button className="pdfButton">📄 Отримати PDF-чеклист у бот</button>
+
+            <button
+              className="secondaryButton"
+              onClick={() => {
+                setStep(1);
+                setGender(null);
+                setActivity(null);
+                setGoal(null);
+                setMeals(null);
+              }}
+            >
+              🔄 Новий розрахунок
             </button>
           </section>
+        )}
+
+        {step > 1 && step < 5 && (
+          <button className="backButton" onClick={() => setStep(step - 1)}>
+            ← Назад
+          </button>
         )}
       </section>
     </main>
