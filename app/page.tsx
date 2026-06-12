@@ -12,6 +12,7 @@ export default function Home() {
   const [activity, setActivity] = useState<Activity | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
   const [meals, setMeals] = useState<number | null>(null);
+  const [loadingPdf, setLoadingPdf] = useState(false);
 
   function portionRange(value: number) {
     if (value < 1) return "до 1";
@@ -244,8 +245,13 @@ export default function Home() {
 
             <button
   className="pdfButton"
-  onClick={async () => {
-    const userId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
+ onClick={async () => {
+  setLoadingPdf(true);
+
+  try {
+    const tg = (window as any).Telegram?.WebApp;
+
+    const userId = tg?.initDataUnsafe?.user?.id;
 
     if (!userId) {
       alert("Відкрий калькулятор саме через Telegram Mini App, не через браузер.");
@@ -273,10 +279,24 @@ export default function Home() {
 
     const data = await response.json();
 
-    alert(JSON.stringify(data, null, 2));
-  }}
+    if (data.success) {
+      tg?.showAlert(
+        "PDF надіслано в чат 🥑",
+        () => tg?.close()
+      );
+    } else {
+      alert(`Помилка: ${JSON.stringify(data)}`);
+    }
+  } catch (err) {
+    alert(`Помилка: ${err}`);
+  } finally {
+    setLoadingPdf(false);
+  }
+}}
 >
-  📄 Отримати PDF-чеклист у бот
+ {loadingPdf
+  ? "⏳ Генеруємо PDF..."
+  : "📄 Отримати PDF-чеклист у бот"}
 </button>
 
             <button
