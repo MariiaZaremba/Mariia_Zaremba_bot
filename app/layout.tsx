@@ -1,10 +1,12 @@
+import "./globals.css";
+
 export const metadata = {
   title: "Калькулятор порцій",
-  description: "Правило руки"
+  description: "Правило руки",
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
