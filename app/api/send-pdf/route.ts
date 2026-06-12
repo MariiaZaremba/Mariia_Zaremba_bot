@@ -158,7 +158,8 @@ export async function POST(req: Request) {
 
     const formData = new FormData();
     formData.append("chat_id", String(userId));
-    formData.append("caption", "Твій PDF-чеклист за правилом руки готовий 🥑");
+    // formData.append("caption", "Твій PDF-чеклист за правилом руки готовий 🥑");
+    formData.append("caption", "Your hand portions PDF is ready");
     formData.append(
       "document",
       new Blob([Buffer.from(pdfBytes)], { type: "application/pdf" }),
