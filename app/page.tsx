@@ -72,7 +72,7 @@ export default function Home() {
   return (
     <main className="page">
       <section className="card">
-        <div className="badge">🥑 правило руки</div>
+        <div className="badge"> 🖐 правило руки</div>
 
         <h1>Калькулятор порцій</h1>
         <p className="subtitle">
@@ -242,7 +242,47 @@ export default function Home() {
               <p>🥑 Жири: {result.fatMeal} пальця</p>
             </div>
 
-            <button className="pdfButton">📄 Отримати PDF-чеклист у бот</button>
+            <button
+  className="pdfButton"
+  onClick={async () => {
+    const userId = (window as any).Telegram?.WebApp?.initDataUnsafe?.user?.id;
+
+    if (!userId) {
+      alert("Відкрий калькулятор саме через Telegram Mini App, не через браузер.");
+      return;
+    }
+
+    const response = await fetch("/api/send-pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        protein: result.protein,
+        carbs: result.carbs,
+        fat: result.fat,
+        veg: result.veg,
+        proteinMeal: result.proteinMeal,
+        carbsMeal: result.carbsMeal,
+        fatMeal: result.fatMeal,
+        vegMeal: result.vegMeal,
+        meals,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("PDF вже надіслано тобі в бот 👌");
+    } else {
+      alert("Не вдалося надіслати PDF. Перевір токен бота або логи Vercel.");
+      console.log(data);
+    }
+  }}
+>
+  📄 Отримати PDF-чеклист у бот
+</button>
 
             <button
               className="secondaryButton"
