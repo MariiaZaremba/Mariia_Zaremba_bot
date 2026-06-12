@@ -161,7 +161,7 @@ export async function POST(req: Request) {
     formData.append("caption", "Твій PDF-чеклист за правилом руки готовий 🥑");
     formData.append(
       "document",
-      new Blob([pdfBytes], { type: "application/pdf" }),
+      new Blob([Buffer.from(pdfBytes)], { type: "application/pdf" }),
       "hand-portions-checklist.pdf"
     );
 
