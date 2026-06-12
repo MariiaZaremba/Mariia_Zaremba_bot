@@ -273,12 +273,7 @@ export default function Home() {
 
     const data = await response.json();
 
-    if (data.success) {
-      alert("PDF вже надіслано тобі в бот 👌");
-    } else {
-      alert("Не вдалося надіслати PDF. Перевір токен бота або логи Vercel.");
-      console.log(data);
-    }
+    alert(JSON.stringify(data, null, 2));
   }}
 >
   📄 Отримати PDF-чеклист у бот
