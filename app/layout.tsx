@@ -12,7 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk">
-      <body>{children}</body>
+      <body>{children}
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+      </body>
     </html>
   );
 }
