@@ -12,6 +12,7 @@ export default function Home() {
   const [activity, setActivity] = useState<Activity | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
   const [meals, setMeals] = useState<number | null>(null);
+  const [loadingPdf, setLoadingPdf] = useState(false);
   const [loadingText, setLoadingText] = useState("");
 
   function portionRange(value: number) {
@@ -68,12 +69,63 @@ export default function Home() {
     };
   }
 
+  async function sendPdf(result: any) {
+    setLoadingPdf(true);
+    setLoadingText("🥑 Рахуємо твої порції...");
+
+    try {
+      const tg = (window as any).Telegram?.WebApp;
+      const userId = tg?.initDataUnsafe?.user?.id;
+
+      if (!userId) {
+        alert("Відкрий калькулятор саме через Telegram Mini App, не через браузер.");
+        return;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 700));
+      setLoadingText("📄 Створюємо PDF...");
+
+      const response = await fetch("/api/send-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          protein: result.protein,
+          carbs: result.carbs,
+          fat: result.fat,
+          veg: result.veg,
+          proteinMeal: result.proteinMeal,
+          carbsMeal: result.carbsMeal,
+          fatMeal: result.fatMeal,
+          vegMeal: result.vegMeal,
+          meals,
+        }),
+      });
+
+      setLoadingText("📨 Надсилаємо в Telegram...");
+
+      const data = await response.json();
+
+      if (data.success) {
+        tg?.showAlert("PDF надіслано в чат 🥑", () => tg?.close());
+      } else {
+        alert(`Помилка: ${JSON.stringify(data)}`);
+      }
+    } catch (err) {
+      alert(`Помилка: ${err}`);
+    } finally {
+      setLoadingPdf(false);
+    }
+  }
+
   const result = calculate();
 
   return (
     <main className="page">
       <section className="card">
-        <div className="badge"> 🖐 правило руки</div>
+        <div className="badge">🖐 правило руки</div>
 
         <h1>Калькулятор порцій</h1>
         <p className="subtitle">
@@ -86,22 +138,10 @@ export default function Home() {
 
         {step === 1 && (
           <Block title="1. Обери стать">
-            <Button
-              active={gender === "female"}
-              onClick={() => {
-                setGender("female");
-                setStep(2);
-              }}
-            >
+            <Button active={gender === "female"} onClick={() => { setGender("female"); setStep(2); }}>
               Жінка
             </Button>
-            <Button
-              active={gender === "male"}
-              onClick={() => {
-                setGender("male");
-                setStep(2);
-              }}
-            >
+            <Button active={gender === "male"} onClick={() => { setGender("male"); setStep(2); }}>
               Чоловік
             </Button>
           </Block>
@@ -110,64 +150,19 @@ export default function Home() {
         {step === 2 && (
           <Block title="2. Який у тебе рівень активності?">
             <div className="hintBox">
-              <p>
-                <strong>Низький:</strong>
-                <br />
-                — сидяча робота
-                <br />
-                — мало руху
-                <br />
-                — тренувань майже немає
-              </p>
-
-              <p>
-                <strong>Середній:</strong>
-                <br />
-                — 2–4 тренування на тиждень
-                <br />
-                — приблизно 6–10 тис. кроків на день
-              </p>
-
-              <p>
-                <strong>Високий:</strong>
-                <br />
-                — 4+ тренувань на тиждень
-                <br />
-                — або активна робота
-                <br />
-                — або багато руху протягом дня
-              </p>
-
-              <p className="tip">
-                💡 <strong>Якщо сумніваєшся — краще обери нижчий рівень.</strong>
-              </p>
+              <p><strong>Низький:</strong><br />— сидяча робота<br />— мало руху<br />— тренувань майже немає</p>
+              <p><strong>Середній:</strong><br />— 2–4 тренування на тиждень<br />— приблизно 6–10 тис. кроків на день</p>
+              <p><strong>Високий:</strong><br />— 4+ тренувань на тиждень<br />— або активна робота<br />— або багато руху протягом дня</p>
+              <p className="tip">💡 <strong>Якщо сумніваєшся — краще обери нижчий рівень.</strong></p>
             </div>
 
-            <Button
-              active={activity === "low"}
-              onClick={() => {
-                setActivity("low");
-                setStep(3);
-              }}
-            >
+            <Button active={activity === "low"} onClick={() => { setActivity("low"); setStep(3); }}>
               Низький
             </Button>
-            <Button
-              active={activity === "medium"}
-              onClick={() => {
-                setActivity("medium");
-                setStep(3);
-              }}
-            >
+            <Button active={activity === "medium"} onClick={() => { setActivity("medium"); setStep(3); }}>
               Середній
             </Button>
-            <Button
-              active={activity === "high"}
-              onClick={() => {
-                setActivity("high");
-                setStep(3);
-              }}
-            >
+            <Button active={activity === "high"} onClick={() => { setActivity("high"); setStep(3); }}>
               Високий
             </Button>
           </Block>
@@ -175,31 +170,13 @@ export default function Home() {
 
         {step === 3 && (
           <Block title="3. Яка твоя ціль зараз?">
-            <Button
-              active={goal === "lose"}
-              onClick={() => {
-                setGoal("lose");
-                setStep(4);
-              }}
-            >
+            <Button active={goal === "lose"} onClick={() => { setGoal("lose"); setStep(4); }}>
               Схуднення
             </Button>
-            <Button
-              active={goal === "maintain"}
-              onClick={() => {
-                setGoal("maintain");
-                setStep(4);
-              }}
-            >
+            <Button active={goal === "maintain"} onClick={() => { setGoal("maintain"); setStep(4); }}>
               Підтримка
             </Button>
-            <Button
-              active={goal === "gain"}
-              onClick={() => {
-                setGoal("gain");
-                setStep(4);
-              }}
-            >
+            <Button active={goal === "gain"} onClick={() => { setGoal("gain"); setStep(4); }}>
               Набір ваги/мʼязів
             </Button>
           </Block>
@@ -244,18 +221,15 @@ export default function Home() {
             </div>
 
             {loadingPdf ? (
-  <div className="loadingBox">
-    <div className="spinner"></div>
-    <p>{loadingText}</p>
-  </div>
-) : (
-  <button
-    className="pdfButton"
-    onClick={...твій поточний onClick...}
-  >
-    📄 Отримати PDF-чеклист у бот
-  </button>
-)}
+              <div className="loadingBox">
+                <div className="spinner"></div>
+                <p>{loadingText}</p>
+              </div>
+            ) : (
+              <button className="pdfButton" onClick={() => sendPdf(result)}>
+                📄 Отримати PDF-чеклист у бот
+              </button>
+            )}
 
             <button
               className="secondaryButton"
@@ -265,6 +239,7 @@ export default function Home() {
                 setActivity(null);
                 setGoal(null);
                 setMeals(null);
+                setLoadingText("");
               }}
             >
               🔄 Новий розрахунок
