@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     );
 
     const boldFontBytes = readFileSync(
-      path.join(process.cwd(), "public", "fonts", "NotoSans.ttf")
+      path.join(process.cwd(), "public", "fonts", "NotoSans-Bold.ttf")
     );
 
     const font = await pdfDoc.embedFont(regularFontBytes);
