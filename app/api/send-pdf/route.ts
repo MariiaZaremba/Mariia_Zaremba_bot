@@ -106,7 +106,8 @@ export async function POST(req: Request) {
 
     days.forEach((day) => {
       page.drawText(day, { x: 60, y, size: 11, font: bold, color: dark });
-      page.drawText("Bilok: ○ ○ ○    Ovochi: ○ ○ ○ ○ ○    Vuhlevody: ○ ○ ○    Zhyry: ○ ○ ○", {
+      
+      page.drawText("Bilok: [ ] [ ] [ ]    Ovochi: [ ] [ ] [ ] [ ] [ ]    Vuhlevody: [ ] [ ] [ ]    Zhyry: [ ] [ ] [ ]", {
         x: 115,
         y,
         size: 10,
