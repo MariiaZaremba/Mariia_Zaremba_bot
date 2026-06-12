@@ -6,6 +6,7 @@ type Gender = "female" | "male";
 type Activity = "low" | "medium" | "high";
 type Goal = "lose" | "maintain" | "gain";
 
+
 export default function Home() {
   const [step, setStep] = useState(1);
   const [gender, setGender] = useState<Gender | null>(null);
