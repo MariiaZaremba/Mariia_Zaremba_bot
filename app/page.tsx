@@ -12,7 +12,7 @@ export default function Home() {
   const [activity, setActivity] = useState<Activity | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
   const [meals, setMeals] = useState<number | null>(null);
-  const [loadingPdf, setLoadingPdf] = useState(false);
+  const [loadingText, setLoadingText] = useState("");
 
   function portionRange(value: number) {
     if (value < 1) return "до 1";
@@ -243,61 +243,19 @@ export default function Home() {
               <p>🥑 Жири: {result.fatMeal} пальця</p>
             </div>
 
-            <button
-  className="pdfButton"
- onClick={async () => {
-  setLoadingPdf(true);
-
-  try {
-    const tg = (window as any).Telegram?.WebApp;
-
-    const userId = tg?.initDataUnsafe?.user?.id;
-
-    if (!userId) {
-      alert("Відкрий калькулятор саме через Telegram Mini App, не через браузер.");
-      return;
-    }
-
-    const response = await fetch("/api/send-pdf", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId,
-        protein: result.protein,
-        carbs: result.carbs,
-        fat: result.fat,
-        veg: result.veg,
-        proteinMeal: result.proteinMeal,
-        carbsMeal: result.carbsMeal,
-        fatMeal: result.fatMeal,
-        vegMeal: result.vegMeal,
-        meals,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      tg?.showAlert(
-        "PDF надіслано в чат 🥑",
-        () => tg?.close()
-      );
-    } else {
-      alert(`Помилка: ${JSON.stringify(data)}`);
-    }
-  } catch (err) {
-    alert(`Помилка: ${err}`);
-  } finally {
-    setLoadingPdf(false);
-  }
-}}
->
- {loadingPdf
-  ? "⏳ Генеруємо PDF..."
-  : "📄 Отримати PDF-чеклист у бот"}
-</button>
+            {loadingPdf ? (
+  <div className="loadingBox">
+    <div className="spinner"></div>
+    <p>{loadingText}</p>
+  </div>
+) : (
+  <button
+    className="pdfButton"
+    onClick={...твій поточний onClick...}
+  >
+    📄 Отримати PDF-чеклист у бот
+  </button>
+)}
 
             <button
               className="secondaryButton"
