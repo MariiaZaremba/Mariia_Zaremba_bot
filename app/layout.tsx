@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata = {
   title: "Калькулятор порцій",
@@ -12,8 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk">
-      <body>{children}
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+      <body>
+        {children}
+        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
       </body>
     </html>
   );
