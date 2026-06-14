@@ -11,17 +11,36 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     const {
-      userId,
-      protein,
-      carbs,
-      fat,
-      veg,
-      proteinMeal,
-      carbsMeal,
-      fatMeal,
-      vegMeal,
-      meals,
-    } = data;
+  userId,
+  gender,
+  activity,
+  goal,
+  protein,
+  carbs,
+  fat,
+  veg,
+  proteinMeal,
+  carbsMeal,
+  fatMeal,
+  vegMeal,
+  meals,
+} = data;
+
+const genderText = gender === "female" ? "Жінка" : "Чоловік";
+
+const activityText =
+  activity === "low"
+    ? "Низький"
+    : activity === "medium"
+    ? "Середній"
+    : "Високий";
+
+const goalText =
+  goal === "lose"
+    ? "Схуднення"
+    : goal === "maintain"
+    ? "Підтримка"
+    : "Набір ваги/мʼязів";
 
     if (!userId) {
       return NextResponse.json({ success: false, error: "No userId" }, { status: 400 });
