@@ -102,6 +102,9 @@ export default function Home() {
           fatMeal: result.fatMeal,
           vegMeal: result.vegMeal,
           meals,
+          gender,
+          activity,
+          goal,
         }),
       });
 
