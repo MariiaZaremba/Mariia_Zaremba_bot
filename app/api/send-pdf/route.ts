@@ -11,40 +11,30 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     const {
-  userId,
-  gender,
-  activity,
-  goal,
-  protein,
-  carbs,
-  fat,
-  veg,
-  proteinMeal,
-  carbsMeal,
-  fatMeal,
-  vegMeal,
-  meals,
-} = data;
-
-const genderText = gender === "female" ? "Жінка" : "Чоловік";
-
-const activityText =
-  activity === "low"
-    ? "Низький"
-    : activity === "medium"
-    ? "Середній"
-    : "Високий";
-
-const goalText =
-  goal === "lose"
-    ? "Схуднення"
-    : goal === "maintain"
-    ? "Підтримка"
-    : "Набір ваги/мʼязів";
+      userId,
+      gender,
+      activity,
+      goal,
+      protein,
+      carbs,
+      fat,
+      veg,
+      proteinMeal,
+      carbsMeal,
+      fatMeal,
+      vegMeal,
+      meals,
+    } = data;
 
     if (!userId) {
       return NextResponse.json({ success: false, error: "No userId" }, { status: 400 });
     }
+
+    const genderText = gender === "female" ? "Жінка" : "Чоловік";
+    const activityText =
+      activity === "low" ? "Низький" : activity === "medium" ? "Середній" : "Високий";
+    const goalText =
+      goal === "lose" ? "Схуднення" : goal === "maintain" ? "Підтримка" : "Набір ваги/мʼязів";
 
     const pdfDoc = await PDFDocument.create();
     pdfDoc.registerFontkit(fontkit);
@@ -62,28 +52,20 @@ const goalText =
 
     const page = pdfDoc.addPage([595, 842]);
 
-    // --- PALETTE ---
-    const brandGreen  = rgb(0.278, 0.478, 0.200); // #477A33
-    const darkGreen   = rgb(0.118, 0.169, 0.078); // #1E2B14
-    const cream       = rgb(0.961, 0.941, 0.910); // #F5F0E8
-    const white       = rgb(1, 1, 1);
-    const mintLight   = rgb(0.831, 0.929, 0.792); // #D4EDCA
-    const mintSection = rgb(0.914, 0.953, 0.871); // #EAF3DE
-    const blueLight   = rgb(0.784, 0.902, 0.969); // #C8E6F7
-    const yellowLight = rgb(1.000, 0.941, 0.678); // #FFF0AD
-    const peachLight  = rgb(1.000, 0.867, 0.710); // #FFDDB5
-
-    const blueAccent   = rgb(0.094, 0.373, 0.647); // #185FA5
-    const greenAccent  = rgb(0.231, 0.427, 0.067); // #3B6D11
-    const amberAccent  = rgb(0.522, 0.310, 0.043); // #854F0B
-    const orangeAccent = rgb(0.910, 0.514, 0.290); // #E8834A
-
-    const blueText   = rgb(0.016, 0.173, 0.325); // #042C53
-    const greenText  = rgb(0.090, 0.314, 0.016); // #173404
-    const amberText  = rgb(0.255, 0.141, 0.008); // #412402
-    const peachText  = rgb(0.290, 0.106, 0.047); // #4A1B0C
-    const muted      = rgb(0.500, 0.500, 0.500);
-    const rowAlt     = rgb(0.976, 0.992, 0.965); // #F9FBF7
+    const green = rgb(0.28, 0.48, 0.2);
+    const dark = rgb(0.1, 0.16, 0.08);
+    const cream = rgb(0.97, 0.95, 0.9);
+    const white = rgb(1, 1, 1);
+    const pale = rgb(0.94, 0.97, 0.91);
+    const line = rgb(0.72, 0.82, 0.65);
+    const blue = rgb(0.78, 0.9, 0.97);
+    const mint = rgb(0.83, 0.93, 0.79);
+    const yellow = rgb(1, 0.94, 0.68);
+    const peach = rgb(1, 0.86, 0.7);
+    const blueAccent = rgb(0.1, 0.37, 0.65);
+    const greenAccent = rgb(0.23, 0.43, 0.07);
+    const amberAccent = rgb(0.78, 0.55, 0.08);
+    const orangeAccent = rgb(0.9, 0.42, 0.25);
 
     function text(
       txt: string,
@@ -91,143 +73,149 @@ const goalText =
       y: number,
       size = 12,
       isBold = false,
-      color = darkGreen,
+      color = dark,
       maxWidth?: number
     ) {
-      page.drawText(txt, { x, y, size, font: isBold ? bold : font, color, maxWidth, lineHeight: size * 1.3 });
+      page.drawText(txt, {
+        x,
+        y,
+        size,
+        font: isBold ? bold : font,
+        color,
+        maxWidth,
+        lineHeight: size * 1.25,
+      });
     }
 
-    function rect(x: number, y: number, w: number, h: number, color = white) {
-      page.drawRectangle({ x, y, width: w, height: h, color });
+    function box(x: number, y: number, w: number, h: number, color = white, border = false) {
+      page.drawRectangle({
+        x,
+        y,
+        width: w,
+        height: h,
+        color,
+        borderColor: border ? line : undefined,
+        borderWidth: border ? 1 : undefined,
+      });
     }
 
-    // ── PAGE 1 BACKGROUND ────────────────────────────────────────────────────
-    rect(0, 0, 595, 842, cream);
-    rect(35, 35, 525, 772, white);
+    function circle(x: number, y: number, r: number, color = green) {
+      page.drawEllipse({
+        x,
+        y,
+        xScale: r,
+        yScale: r,
+        borderColor: color,
+        borderWidth: 1.2,
+      });
+    }
 
-    // ── HEADER (compact) ─────────────────────────────────────────────────────
-    text("Твій персональний", 65, 780, 11, false, brandGreen);
-    text("трекер порцій", 65, 752, 28, true, darkGreen);
-    rect(65, 747, 155, 2, brandGreen);
-    text(`Прийомів їжі на день: ${meals}`, 65, 733, 10, false, muted);
-    text("@ro_mashka_fit", 300, 733, 10, true, brandGreen);
+    function circles(count: number, x: number, y: number, color: any) {
+      const total = Math.max(1, Math.round(Number(count || 0)));
+      for (let i = 0; i < total; i++) {
+        circle(x + i * 13, y, 4.2, color);
+      }
+    }
 
-    // ── GOALS — compact 2×2 grid ──────────────────────────────────────────────
-    // section label
-    rect(65, 694, 465, 30, mintSection);
-    rect(65, 694, 5, 30, brandGreen);
-    text("Твої цілі", 82, 703, 11, true, brandGreen);
+    function portionCard(
+      x: number,
+      y: number,
+      w: number,
+      bg: any,
+      accent: any,
+      label: string,
+      value: string,
+      meal: string
+    ) {
+      box(x, y, w, 70, bg, true);
+      page.drawEllipse({ x: x + 32, y: y + 35, xScale: 23, yScale: 23, color: white });
+      text(label, x + 70, y + 45, 11, true, dark);
+      text(value, x + 70, y + 24, 20, true, dark);
+      text(meal, x + 70, y + 10, 8, false, accent);
+    }
 
-    // 2-column grid: left col x=65, right col x=300; card height=52, gap=6
-    const goalCards = [
-      {
-        label: "Білок",
-        day: `${protein} долонь / день`,
-        meal: `${proteinMeal} / прийом`,
-        bg: blueLight, stripe: blueAccent, titleColor: blueText, subColor: blueAccent,
-        x: 65,
-      },
-      {
-        label: "Овочі / фрукти",
-        day: `${veg} кулаків / день`,
-        meal: `${vegMeal} / прийом`,
-        bg: mintLight, stripe: greenAccent, titleColor: greenText, subColor: greenAccent,
-        x: 300,
-      },
-      {
-        label: "Вуглеводи",
-        day: `${carbs} жмені / день`,
-        meal: `${carbsMeal} / прийом`,
-        bg: yellowLight, stripe: amberAccent, titleColor: amberText, subColor: amberAccent,
-        x: 65,
-      },
-      {
-        label: "Жири",
-        day: `${fat} пальців / день`,
-        meal: `${fatMeal} / прийом`,
-        bg: peachLight, stripe: orangeAccent, titleColor: peachText, subColor: orangeAccent,
-        x: 300,
-      },
-    ];
+    page.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: cream });
+    box(32, 30, 531, 782, white, false);
 
-    // row 1 at y=636, row 2 at y=578
-    const goalRows = [636, 578];
-    goalCards.forEach((c, i) => {
-      const y = goalRows[Math.floor(i / 2)];
-      const w = 227;
-      rect(c.x, y, w, 52, c.bg);
-      rect(c.x, y, 4, 52, c.stripe);
-      text(c.label,  c.x + 12, y + 36, 9,  true,  c.titleColor);
-      text(c.day,    c.x + 12, y + 22, 11, true,  c.titleColor);
-      text(c.meal,   c.x + 12, y + 9,  8,  false, c.subColor);
-    });
-    // gap between columns
-    // (300 - 65 - 227 = 8px gap — natural)
+    text("🥑 @ro_mashka_fit", 228, 778, 12, true, green);
+    text("Трекер порцій", 130, 720, 44, true, dark);
+    text(`Правило руки · Прийомів їжі на день: ${meals}`, 155, 692, 14, true, green);
 
-    // ── 7-DAY TRACKER (main focus) ────────────────────────────────────────────
-    rect(65, 548, 465, 24, mintSection);
-    rect(65, 548, 5, 24, brandGreen);
-    text("Трекер на 7 днів", 82, 557, 13, true, brandGreen);
+    box(55, 625, 485, 82, pale, true);
+    text("Інформація про клієнта", 75, 682, 14, true, green);
 
-    // column headers
-    const colX = [68, 110, 215, 330, 430];
-    rect(65, 530, 465, 14, rgb(0.95, 0.97, 0.93));
-    text("День", colX[0] + 4, 533, 7, true, brandGreen);
-    text("Білок",      colX[1], 533, 7, true, blueAccent);
-    text("Овочі",      colX[2], 533, 7, true, greenAccent);
-    text("Вуглеводи",  colX[3], 533, 7, true, amberAccent);
-    text("Жири",       colX[4], 533, 7, true, orangeAccent);
+    text("Стать", 95, 650, 9, false, green);
+    text(genderText, 95, 632, 12, true, dark);
 
-    // circle legend (tiny, under header)
-    text(`(${protein})`, colX[1], 522, 6, false, blueAccent);
-    text(`(${veg})`,     colX[2], 522, 6, false, greenAccent);
-    text(`(${carbs})`,   colX[3], 522, 6, false, amberAccent);
-    text(`(${fat})`,     colX[4], 522, 6, false, orangeAccent);
+    text("Активність", 210, 650, 9, false, green);
+    text(activityText, 210, 632, 12, true, dark);
+
+    text("Ціль", 335, 650, 9, false, green);
+    text(goalText, 335, 632, 12, true, dark);
+
+    text("Прийомів їжі", 455, 650, 9, false, green);
+    text(String(meals), 455, 632, 12, true, dark);
+
+    text("Твої порції на день", 55, 585, 15, true, green);
+    box(55, 570, 485, 1, line);
+
+    portionCard(55, 490, 235, blue, blueAccent, "Білок", `${protein}`, `${proteinMeal} на прийом`);
+    text("долоні", 215, 512, 10, false, dark);
+
+    portionCard(305, 490, 235, mint, greenAccent, "Овочі / фрукти", `${veg}`, `${vegMeal} на прийом`);
+    text("кулаків", 465, 512, 10, false, dark);
+
+    portionCard(55, 405, 235, yellow, amberAccent, "Вуглеводи", `${carbs}`, `${carbsMeal} на прийом`);
+    text("жмені", 215, 427, 10, false, dark);
+
+    portionCard(305, 405, 235, peach, orangeAccent, "Жири", `${fat}`, `${fatMeal} на прийом`);
+    text("великих пальців", 450, 427, 9, false, dark);
+
+    text("Трекер на 7 днів", 55, 360, 17, true, green);
+    box(55, 338, 485, 1, line);
+
+    const col = {
+      day: 65,
+      protein: 125,
+      veg: 245,
+      carbs: 365,
+      fat: 470,
+    };
+
+    text("День", col.day, 318, 9, true, dark);
+    text("Білок", col.protein, 318, 9, true, blueAccent);
+    text("Овочі / фрукти", col.veg, 318, 9, true, greenAccent);
+    text("Вуглеводи", col.carbs, 318, 9, true, amberAccent);
+    text("Жири", col.fat, 318, 9, true, orangeAccent);
 
     const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
-    let y = 510;
+    let y = 292;
 
-    days.forEach((day, i) => {
-      const rowBg = i % 2 === 0 ? white : rowAlt;
-      rect(65, y - 5, 465, 20, rowBg);
-      rect(65, y - 5, 3, 20, brandGreen);
+    days.forEach((day, index) => {
+      if (index % 2 === 0) box(55, y - 7, 485, 24, rgb(0.98, 0.99, 0.96), false);
 
-      text(day, colX[0] + 4, y, 9, true, brandGreen);
+      text(day, col.day, y, 12, true, dark);
 
-      // protein circles
-      const pCount = Math.round(Number(protein));
-      for (let c = 0; c < Math.min(pCount, 6); c++)
-        text("○", colX[1] + c * 14, y, 10, false, blueAccent);
+      circles(protein, col.protein, y + 4, blueAccent);
+      circles(veg, col.veg, y + 4, greenAccent);
+      circles(carbs, col.carbs, y + 4, amberAccent);
+      circles(fat, col.fat, y + 4, orangeAccent);
 
-      // veg circles
-      const vCount = Math.round(Number(veg));
-      for (let c = 0; c < Math.min(vCount, 6); c++)
-        text("○", colX[2] + c * 14, y, 10, false, greenAccent);
-
-      // carbs circles
-      const cCount = Math.round(Number(carbs));
-      for (let c = 0; c < Math.min(cCount, 6); c++)
-        text("○", colX[3] + c * 14, y, 10, false, amberAccent);
-
-      // fat circles
-      const fCount = Math.round(Number(fat));
-      for (let c = 0; c < Math.min(fCount, 6); c++)
-        text("○", colX[4] + c * 14, y, 10, false, orangeAccent);
-
-      y -= 22;
+      y -= 30;
     });
 
-    // ── FOOTER ───────────────────────────────────────────────────────────────
-    rect(65, 90, 465, 1, mintSection);
-    text("Правило руки", 65, 76, 10, true, brandGreen);
+    box(55, 55, 485, 55, pale, true);
+    text("Правило руки", 75, 88, 12, true, green);
     text(
       "Білок = 1 долоня  ·  Жири = 1 великий палець  ·  Вуглеводи = 1 жменя  ·  Овочі = 1 кулак",
-      65, 60, 8, false, muted, 460
+      75,
+      68,
+      8,
+      false,
+      dark,
+      440
     );
 
-    // ════════════════════════════════════════════════════════════════════════
-    //  PAGE 2
-    // ════════════════════════════════════════════════════════════════════════
     const page2 = pdfDoc.addPage([595, 842]);
 
     function text2(
@@ -236,76 +224,91 @@ const goalText =
       y: number,
       size = 12,
       isBold = false,
-      color = darkGreen,
+      color = dark,
       maxWidth?: number
     ) {
-      page2.drawText(txt, { x, y, size, font: isBold ? bold : font, color, maxWidth, lineHeight: size * 1.3 });
+      page2.drawText(txt, {
+        x,
+        y,
+        size,
+        font: isBold ? bold : font,
+        color,
+        maxWidth,
+        lineHeight: size * 1.25,
+      });
     }
 
-    function rect2(x: number, y: number, w: number, h: number, color = white) {
-      page2.drawRectangle({ x, y, width: w, height: h, color });
+    function box2(x: number, y: number, w: number, h: number, color = white, border = false) {
+      page2.drawRectangle({
+        x,
+        y,
+        width: w,
+        height: h,
+        color,
+        borderColor: border ? line : undefined,
+        borderWidth: border ? 1 : undefined,
+      });
     }
 
-    rect2(0, 0, 595, 842, cream);
-    rect2(35, 35, 525, 772, white);
+    page2.drawRectangle({ x: 0, y: 0, width: 595, height: 842, color: cream });
+    box2(32, 30, 531, 782, white);
 
-    // ── PAGE 2 HEADER ────────────────────────────────────────────────────────
-    text2("Як користуватись", 65, 768, 22, true, darkGreen);
-    text2("правилом руки", 65, 740, 22, true, brandGreen);
-    rect2(65, 734, 145, 2, brandGreen);
+    text2("Як користуватись", 65, 745, 28, true, dark);
+    text2("правилом руки", 65, 710, 28, true, green);
 
-    // ── INFO CARDS ────────────────────────────────────────────────────────────
-    const info = [
+    const tips = [
       {
         title: "Білок",
-        body: "М'ясо, риба, яйця, морепродукти, кисломолочні продукти, тофу, бобові.",
-        bg: blueLight, stripe: blueAccent, titleColor: blueText, bodyColor: blueAccent,
+        body: "Мʼясо, риба, яйця, морепродукти, кисломолочні продукти, тофу, бобові.",
+        bg: blue,
+        color: blueAccent,
       },
       {
         title: "Овочі та фрукти",
         body: "Салати, зелень, броколі, огірки, помідори, ягоди, яблука, сезонні овочі.",
-        bg: mintLight, stripe: greenAccent, titleColor: greenText, bodyColor: greenAccent,
+        bg: mint,
+        color: greenAccent,
       },
       {
         title: "Вуглеводи",
         body: "Крупи, картопля, батат, цільнозерновий хліб, паста, фрукти.",
-        bg: yellowLight, stripe: amberAccent, titleColor: amberText, bodyColor: amberAccent,
+        bg: yellow,
+        color: amberAccent,
       },
       {
         title: "Жири",
         body: "Авокадо, оливкова олія, горіхи, насіння, масло, жирна риба.",
-        bg: peachLight, stripe: orangeAccent, titleColor: peachText, bodyColor: orangeAccent,
+        bg: peach,
+        color: orangeAccent,
       },
     ];
 
-    let y2 = 690;
-    info.forEach((item) => {
-      rect2(65, y2, 465, 66, item.bg);
-      rect2(65, y2, 5, 66, item.stripe);
-      text2(item.title, 83, y2 + 45, 13, true, item.titleColor);
-      text2(item.body, 83, y2 + 13, 9, false, item.bodyColor, 420);
-      y2 -= 75;
+    let y2 = 630;
+
+    tips.forEach((item) => {
+      box2(65, y2, 465, 78, item.bg, true);
+      text2(item.title, 85, y2 + 48, 14, true, dark);
+      text2(item.body, 85, y2 + 22, 9, false, item.color, 410);
+      y2 -= 95;
     });
 
-    // ── IMPORTANT BOX ────────────────────────────────────────────────────────
-    rect2(65, 260, 465, 62, mintSection);
-    rect2(65, 260, 5, 62, brandGreen);
-    text2("Важливо", 83, 305, 11, true, brandGreen);
+    box2(65, 220, 465, 80, pale, true);
+    text2("Важливо", 85, 270, 13, true, green);
     text2(
-      "Це орієнтовна схема, а не медична рекомендація. Її можна адаптувати під\nголод, самопочуття, тренування, цикл, режим дня та особисті цілі.",
-      83, 278, 9, false, darkGreen, 430
+      "Це орієнтовна схема, а не медична рекомендація. Її можна адаптувати під голод, самопочуття, тренування, цикл, режим дня та особисті цілі.",
+      85,
+      235,
+      10,
+      false,
+      dark,
+      420
     );
 
-    // ── FOOTER ───────────────────────────────────────────────────────────────
-    rect2(65, 155, 465, 1, mintSection);
-    text2("Твій бот:", 65, 138, 10, true, brandGreen);
-    text2("t.me/ro_mashka_fit_bot/hand_portions", 65, 122, 10, false, darkGreen);
-    rect2(65, 72, 465, 1, mintSection);
-    text2("@ro_mashka_fit", 65, 52, 13, true, brandGreen);
+    box2(65, 90, 465, 70, white, true);
+    text2("Твій бот:", 85, 135, 11, true, green);
+    text2("t.me/ro_mashka_fit_bot/hand_portions", 85, 115, 10, false, dark);
+    text2("@ro_mashka_fit", 85, 70, 13, true, green);
 
-    // ════════════════════════════════════════════════════════════════════════
-    //  SEND PDF VIA TELEGRAM
-    // ════════════════════════════════════════════════════════════════════════
     const pdfBytes = await pdfDoc.save();
 
     const formData = new FormData();
