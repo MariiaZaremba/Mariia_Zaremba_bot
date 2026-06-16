@@ -107,31 +107,31 @@ export async function POST(req: Request) {
     }
 
     // Вхідні дані клієнта
-text(genderText, 50, 665, 12, true, dark);
-text(activityText, 165, 665, 12, true, dark);
+text(genderText, 55, 665, 12, true, dark);
+text(activityText, 170, 665, 12, true, dark);
 text(goalText, 338, 665, 12, true, dark);
 text(String(meals), 500, 665, 12, true, dark);
 
 // Значення у верхніх картках
-text(String(protein), 90, 590, 24, true, green);
-text(String(veg), 230, 590, 24, true, green);
-text(String(carbs), 350, 590, 24, true, green);
-text(String(fat), 510, 590, 24, true, green);
+text(String(protein), 90, 595, 24, true, green);
+text(String(veg), 231, 595, 24, true, green);
+text(String(carbs), 354, 595, 24, true, green);
+text(String(fat), 510, 595, 24, true, green);
 
 // Порції на прийом їжі
-text(`${proteinMeal}  на прийом`, 100, 570, 8, false, green);
-text(`${vegMeal} на прийом`, 230, 570, 8, false, green);
-text(`${carbsMeal} на прийом`, 380, 570, 8, false, green);
-text(`${fatMeal} на прийом`, 510, 570, 8, false, green);
+text(`${proteinMeal}  на прийом`, 60, 569, 8, false, green);
+text(`${vegMeal} на прийом`, 230, 569, 8, false, green);
+text(`${carbsMeal} на прийом`, 360, 569, 8, false, green);
+text(`${fatMeal} на прийом`, 480, 569, 8, false, green);
 
 // Кружечки в чеклисті
-const daysY = [350, 300, 250, 200, 150, 100, 50];
+const daysY = [348, 280, 230, 198, 149, 100, 50];
 
 daysY.forEach((y) => {
-  circles(protein, 118, y, blue);
-  circles(veg, 245, y, green);
-  circles(carbs, 350, y, amber);
-  circles(fat, 485, y, orange);
+  circles(protein, 115, y, blue);
+  circles(veg, 240, y, green);
+  circles(carbs, 349, y, amber);
+  circles(fat, 480, y, orange);
 });
 
     const pdfBytes = await pdfDoc.save();
