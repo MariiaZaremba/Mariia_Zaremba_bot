@@ -107,8 +107,8 @@ export async function POST(req: Request) {
     }
 
     // Вхідні дані клієнта
-text(genderText, 55, 665, 12, true, dark);
-text(activityText, 170, 665, 12, true, dark);
+text(genderText, 56, 665, 12, true, dark);
+text(activityText, 171, 665, 12, true, dark);
 text(goalText, 338, 665, 12, true, dark);
 text(String(meals), 500, 665, 12, true, dark);
 
@@ -120,18 +120,18 @@ text(String(fat), 510, 595, 24, true, green);
 
 // Порції на прийом їжі
 text(`${proteinMeal}  на прийом`, 60, 569, 8, false, green);
-text(`${vegMeal} на прийом`, 230, 569, 8, false, green);
-text(`${carbsMeal} на прийом`, 360, 569, 8, false, green);
+text(`${vegMeal} на прийом`, 200, 569, 8, false, green);
+text(`${carbsMeal} на прийом`, 350, 569, 8, false, green);
 text(`${fatMeal} на прийом`, 480, 569, 8, false, green);
 
 // Кружечки в чеклисті
-const daysY = [348, 280, 230, 198, 149, 100, 50];
+const daysY = [345, 290, 239, 198, 149, 100, 50];
 
 daysY.forEach((y) => {
-  circles(protein, 115, y, blue);
-  circles(veg, 240, y, green);
-  circles(carbs, 349, y, amber);
-  circles(fat, 480, y, orange);
+  circles(protein, 110, y, blue);
+  circles(veg, 237, y, green);
+  circles(carbs, 347, y, amber);
+  circles(fat, 478, y, orange);
 });
 
     const pdfBytes = await pdfDoc.save();
