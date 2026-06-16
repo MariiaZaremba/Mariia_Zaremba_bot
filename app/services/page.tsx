@@ -73,7 +73,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <a className="pdfButton" href="https://t.me/ro_mashka_fit" target="_blank">
+        <a className="pdfButton" href="https://airtable.com/appD2Szsuk96hJ9jp/pagLtG7i4grAUFfN3/form" target="_blank">
           ✏️ Записатися
         </a>
       </section>
