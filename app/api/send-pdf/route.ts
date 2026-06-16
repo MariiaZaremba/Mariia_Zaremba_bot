@@ -113,25 +113,25 @@ text(goalText, 338, 658, 12, true, dark);
 text(String(meals), 480, 658, 12, true, dark);
 
 // Значення у верхніх картках
-text(String(protein), 90, 640, 24, true, green);
-text(String(veg), 240, 640, 24, true, green);
-text(String(carbs), 400, 640, 24, true, green);
-text(String(fat), 500, 640, 24, true, green);
+text(String(protein), 90, 600, 24, true, green);
+text(String(veg), 230, 600, 24, true, green);
+text(String(carbs), 380, 600, 24, true, green);
+text(String(fat), 510, 600, 24, true, green);
 
 // Порції на прийом їжі
-text(`${proteinMeal}`, 100, 610, 8, false, green);
-text(`${vegMeal}`, 190, 610, 8, false, green);
-text(`${carbsMeal}`, 300, 610, 8, false, green);
-text(`${fatMeal}`, 500, 610, 8, false, green);
+text(`${proteinMeal}  на прийом`, 100, 550, 8, false, green);
+text(`${vegMeal} на прийом`, 230, 550, 8, false, green);
+text(`${carbsMeal} на прийом`, 380, 550, 8, false, green);
+text(`${fatMeal} на прийом`, 510, 550, 8, false, green);
 
 // Кружечки в чеклисті
-const daysY = [332, 285, 228, 191, 144, 97, 50];
+const daysY = [332, 285, 238, 191, 144, 97, 50];
 
 daysY.forEach((y) => {
-  circles(protein, 128, y, blue);
-  circles(veg, 255, y, green);
-  circles(carbs, 378, y, amber);
-  circles(fat, 495, y, orange);
+  circles(protein, 118, y, blue);
+  circles(veg, 245, y, green);
+  circles(carbs, 350, y, amber);
+  circles(fat, 485, y, orange);
 });
 
     const pdfBytes = await pdfDoc.save();
