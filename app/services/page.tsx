@@ -74,7 +74,7 @@ export default function ServicesPage() {
         </section>
 
         <a className="pdfButton" href="https://t.me/ro_mashka_fit" target="_blank">
-          Написати мені в Telegram
+          ✏️ Записатися
         </a>
       </section>
     </main>
