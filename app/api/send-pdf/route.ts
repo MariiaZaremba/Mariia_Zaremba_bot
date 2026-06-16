@@ -100,11 +100,22 @@ export async function POST(req: Request) {
     }
 
     function circles(count: number, x: number, y: number, color = green) {
-      const total = Math.max(1, Math.round(Number(count || 0)));
-      for (let i = 0; i < total; i++) {
-        circle(x + i * 15, y, 4.5, color);
-      }
-    }
+  const total = Math.max(1, Math.round(Number(count || 0)));
+
+  const perRow = 6; // максимум кружечків у рядку
+
+  for (let i = 0; i < total; i++) {
+    const col = i % perRow;
+    const row = Math.floor(i / perRow);
+
+    circle(
+      x + col * 15,
+      y - row * 12,
+      4.5,
+      color
+    );
+  }
+}
 
     // Вхідні дані клієнта
 text(genderText, 57, 666, 12, true, dark);
