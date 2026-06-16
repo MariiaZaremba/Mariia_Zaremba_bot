@@ -214,4 +214,56 @@ h1 {
   }
 }
 
+.serviceCard {
+  margin-top: 22px;
+  padding: 20px;
+  border-radius: 22px;
+  background: #f6f9f2;
+  border: 1px solid #dbe8d1;
+}
+
+.serviceCard h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  color: #26351f;
+}
+
+.serviceCard h3 {
+  margin: 18px 0 10px;
+  font-size: 17px;
+  color: #477c30;
+}
+
+.serviceCard p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #3d4b37;
+}
+
+.serviceCard ul {
+  padding-left: 20px;
+  color: #3d4b37;
+  line-height: 1.5;
+}
+
+.serviceCard li {
+  margin-bottom: 8px;
+}
+
+.priceBox {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 16px;
+  background: white;
+}
+
+.priceBox p {
+  margin: 6px 0;
+}
+
+a.pdfButton {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
 
