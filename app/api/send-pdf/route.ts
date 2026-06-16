@@ -107,25 +107,25 @@ export async function POST(req: Request) {
     }
 
     // Вхідні дані клієнта
-text(genderText, 70, 658, 12, true, dark);
-text(activityText, 180, 658, 12, true, dark);
-text(goalText, 338, 658, 12, true, dark);
-text(String(meals), 480, 658, 12, true, dark);
+text(genderText, 50, 665, 12, true, dark);
+text(activityText, 165, 665, 12, true, dark);
+text(goalText, 338, 665, 12, true, dark);
+text(String(meals), 500, 665, 12, true, dark);
 
 // Значення у верхніх картках
-text(String(protein), 90, 600, 24, true, green);
-text(String(veg), 230, 600, 24, true, green);
-text(String(carbs), 380, 600, 24, true, green);
-text(String(fat), 510, 600, 24, true, green);
+text(String(protein), 90, 590, 24, true, green);
+text(String(veg), 230, 590, 24, true, green);
+text(String(carbs), 350, 590, 24, true, green);
+text(String(fat), 510, 590, 24, true, green);
 
 // Порції на прийом їжі
-text(`${proteinMeal}  на прийом`, 100, 550, 8, false, green);
-text(`${vegMeal} на прийом`, 230, 550, 8, false, green);
-text(`${carbsMeal} на прийом`, 380, 550, 8, false, green);
-text(`${fatMeal} на прийом`, 510, 550, 8, false, green);
+text(`${proteinMeal}  на прийом`, 100, 570, 8, false, green);
+text(`${vegMeal} на прийом`, 230, 570, 8, false, green);
+text(`${carbsMeal} на прийом`, 380, 570, 8, false, green);
+text(`${fatMeal} на прийом`, 510, 570, 8, false, green);
 
 // Кружечки в чеклисті
-const daysY = [332, 285, 238, 191, 144, 97, 50];
+const daysY = [350, 300, 250, 200, 150, 100, 50];
 
 daysY.forEach((y) => {
   circles(protein, 118, y, blue);
