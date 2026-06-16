@@ -113,16 +113,16 @@ text(goalText, 340, 662, 12, true, dark);
 text(String(meals), 477, 662, 12, true, dark);
 
 // Значення у верхніх картках
-text(String(protein), 122, 565, 24, true, blue);
-text(String(veg), 287, 565, 24, true, green);
-text(String(carbs), 417, 565, 24, true, amber);
-text(String(fat), 528, 565, 24, true, orange);
+text(String(protein), 100, 500, 24, true, blue);
+text(String(veg), 250, 500, 24, true, green);
+text(String(carbs), 420, 500, 24, true, amber);
+text(String(fat), 550, 500, 24, true, orange);
 
 // Порції на прийом їжі
-text(`${proteinMeal} на прийом`, 124, 526, 8, false, blue);
-text(`${vegMeal} на прийом`, 285, 526, 8, false, green);
-text(`${carbsMeal} на прийом`, 410, 526, 8, false, amber);
-text(`${fatMeal} на прийом`, 518, 526, 8, false, orange);
+text(`${proteinMeal} на прийом`, 100, 510, 8, false, green);
+text(`${vegMeal} на прийом`, 190, 510, 8, false, green);
+text(`${carbsMeal} на прийом`, 300, 510, 8, false, green);
+text(`${fatMeal} на прийом`, 500, 510, 8, false, green);
 
 // Кружечки в чеклисті
 const daysY = [312, 265, 218, 171, 124, 77, 30];
