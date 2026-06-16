@@ -106,30 +106,33 @@ export async function POST(req: Request) {
       }
     }
 
-    // ТЕСТОВІ КООРДИНАТИ — зараз підженемо під твій шаблон
-    text(genderText, 90, 650, 12, true, dark);
-    text(activityText, 210, 650, 12, true, dark);
-    text(goalText, 330, 650, 12, true, dark);
-    text(String(meals), 470, 650, 12, true, dark);
+    // Вхідні дані клієнта
+text(genderText, 90, 662, 12, true, dark);
+text(activityText, 212, 662, 12, true, dark);
+text(goalText, 340, 662, 12, true, dark);
+text(String(meals), 477, 662, 12, true, dark);
 
-    text(String(protein), 125, 535, 28, true, blue);
-    text(String(veg), 325, 535, 28, true, green);
-    text(String(carbs), 125, 455, 28, true, amber);
-    text(String(fat), 325, 455, 28, true, orange);
+// Значення у верхніх картках
+text(String(protein), 122, 565, 24, true, blue);
+text(String(veg), 287, 565, 24, true, green);
+text(String(carbs), 417, 565, 24, true, amber);
+text(String(fat), 528, 565, 24, true, orange);
 
-    text(`${proteinMeal} на прийом`, 125, 512, 9, false, blue);
-    text(`${vegMeal} на прийом`, 325, 512, 9, false, green);
-    text(`${carbsMeal} на прийом`, 125, 432, 9, false, amber);
-    text(`${fatMeal} на прийом`, 325, 432, 9, false, orange);
+// Порції на прийом їжі
+text(`${proteinMeal} на прийом`, 124, 526, 8, false, blue);
+text(`${vegMeal} на прийом`, 285, 526, 8, false, green);
+text(`${carbsMeal} на прийом`, 410, 526, 8, false, amber);
+text(`${fatMeal} на прийом`, 518, 526, 8, false, orange);
 
-    const daysY = [330, 300, 270, 240, 210, 180, 150];
+// Кружечки в чеклисті
+const daysY = [312, 265, 218, 171, 124, 77, 30];
 
-    daysY.forEach((y) => {
-      circles(protein, 130, y, blue);
-      circles(veg, 245, y, green);
-      circles(carbs, 365, y, amber);
-      circles(fat, 470, y, orange);
-    });
+daysY.forEach((y) => {
+  circles(protein, 128, y, blue);
+  circles(veg, 255, y, green);
+  circles(carbs, 378, y, amber);
+  circles(fat, 495, y, orange);
+});
 
     const pdfBytes = await pdfDoc.save();
 
