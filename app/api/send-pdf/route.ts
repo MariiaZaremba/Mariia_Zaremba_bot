@@ -107,10 +107,10 @@ export async function POST(req: Request) {
     }
 
     // Вхідні дані клієнта
-text(genderText, 56, 665, 12, true, dark);
-text(activityText, 171, 665, 12, true, dark);
-text(goalText, 338, 665, 12, true, dark);
-text(String(meals), 500, 665, 12, true, dark);
+text(genderText, 57, 666, 12, true, dark);
+text(activityText, 172, 666, 12, true, dark);
+text(goalText, 338, 666, 12, true, dark);
+text(String(meals), 500, 666, 12, true, dark);
 
 // Значення у верхніх картках
 text(String(protein), 90, 595, 24, true, green);
@@ -121,15 +121,15 @@ text(String(fat), 510, 595, 24, true, green);
 // Порції на прийом їжі
 text(`${proteinMeal}  на прийом`, 60, 569, 8, false, green);
 text(`${vegMeal} на прийом`, 200, 569, 8, false, green);
-text(`${carbsMeal} на прийом`, 350, 569, 8, false, green);
+text(`${carbsMeal} на прийом`, 348, 569, 8, false, green);
 text(`${fatMeal} на прийом`, 480, 569, 8, false, green);
 
 // Кружечки в чеклисті
-const daysY = [345, 290, 239, 198, 149, 100, 50];
+const daysY = [344, 290, 240, 198, 149, 100, 50];
 
 daysY.forEach((y) => {
-  circles(protein, 110, y, blue);
-  circles(veg, 237, y, green);
+  circles(protein, 107, y, blue);
+  circles(veg, 235, y, green);
   circles(carbs, 347, y, amber);
   circles(fat, 478, y, orange);
 });
