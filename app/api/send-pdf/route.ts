@@ -150,11 +150,22 @@ daysY.forEach((y) => {
     const formData = new FormData();
     formData.append("chat_id", String(userId));
     formData.append("caption", "Твій PDF-чеклист за правилом руки готовий 🥑");
-    formData.append(
-      "document",
-      new Blob([Buffer.from(pdfBytes)], { type: "application/pdf" }),
-      "treker-portsiy.pdf"
-    );
+    const today = new Date();
+
+const dateString =
+  today.getFullYear() +
+  "-" +
+  String(today.getMonth() + 1).padStart(2, "0") +
+  "-" +
+  String(today.getDate()).padStart(2, "0");
+
+const fileName = `Трекер_порцій_${dateString}.pdf`;
+
+formData.append(
+  "document",
+  new Blob([Buffer.from(pdfBytes)], { type: "application/pdf" }),
+  fileName
+);
 
     const telegramRes = await fetch(
       `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendDocument`,
